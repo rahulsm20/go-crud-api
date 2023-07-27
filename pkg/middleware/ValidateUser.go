@@ -5,31 +5,28 @@ import (
 	"regexp"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rahulsm20/go-crud-api/pkg/models"
 )
 
-func ValidateUser(c *gin.Context) error {
+func ValidateUser(c *gin.Context) (*models.User, error) {
 
-	var user struct {
-		Username string `json:"username"`
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
+	var user models.User
 
 	c.Bind(&user)
 	// var user UserDetails
 
 	if user.Username == "" {
-		return errors.New("please enter a valid username")
+		return nil, errors.New("please enter a valid username")
 	}
 
 	if user.Password == "" {
-		return errors.New("please enter a valid password")
+		return nil, errors.New("please enter a valid password")
 	}
 
 	emailRegex := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
 	if matched, _ := regexp.MatchString(emailRegex, user.Email); !matched {
-		return errors.New("please enter a valid email")
+		return nil, errors.New("please enter a valid email")
 	}
 
-	return nil
+	return &user, nil
 }

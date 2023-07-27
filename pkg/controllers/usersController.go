@@ -12,7 +12,7 @@ import (
 func Signup(c *gin.Context) {
 
 	//Validate Details
-	err := middleware.ValidateUser(c)
+	user, err := middleware.ValidateUser(c)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"message": err.Error(),
@@ -20,16 +20,8 @@ func Signup(c *gin.Context) {
 		fmt.Println(err)
 		return
 	}
-	var body struct {
-		Username string
-		Password string
-		Email    string
-	}
 
-	c.Bind(&body)
-	//Create User
-	user := models.User{Username: body.Username, Password: body.Password, Email: body.Email}
-	result := initializers.DB.Create(&user)
+	result := initializers.DB.Create(user)
 
 	if result.Error != nil {
 		c.JSON(400, gin.H{
