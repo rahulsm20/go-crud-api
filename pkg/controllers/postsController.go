@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/rahulsm20/go-crud-api/initializers"
-	"github.com/rahulsm20/go-crud-api/models"
+	"github.com/rahulsm20/go-crud-api/pkg/initializers"
+	"github.com/rahulsm20/go-crud-api/pkg/models"
 )
 
 func CreatePost(c *gin.Context) {
@@ -14,6 +14,7 @@ func CreatePost(c *gin.Context) {
 	}
 
 	c.Bind(&body)
+
 	//Create Post
 	post := models.Post{Title: body.Title, Body: body.Body}
 	result := initializers.DB.Create(&post)

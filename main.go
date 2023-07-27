@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/rahulsm20/go-crud-api/controllers"
-	"github.com/rahulsm20/go-crud-api/initializers"
+	"github.com/rahulsm20/go-crud-api/pkg/controllers"
+	"github.com/rahulsm20/go-crud-api/pkg/initializers"
 )
 
 func init() {
@@ -13,10 +13,24 @@ func init() {
 
 func main() {
 	r := gin.Default()
-	r.GET("/:id", controllers.FetchPostByID)
-	r.PUT("/:id", controllers.UpdatePost)
-	r.DELETE("/:id", controllers.DeletePost)
-	r.POST("/", controllers.CreatePost)
-	r.GET("/", controllers.FetchAllPosts)
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "Welcome",
+		})
+	})
+	posts := r.Group("/posts")
+	{
+		posts.GET("/:id", controllers.FetchPostByID)
+		posts.PUT("/:id", controllers.UpdatePost)
+		posts.DELETE("/:id", controllers.DeletePost)
+		posts.POST("/", controllers.CreatePost)
+		posts.GET("/", controllers.FetchAllPosts)
+	}
+
+	users := r.Group("/users")
+	{
+		users.POST("/", controllers.Signup)
+		users.DELETE("/", controllers.DeleteUser)
+	}
 	r.Run()
 }
