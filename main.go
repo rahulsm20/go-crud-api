@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/rahulsm20/go-crud-api/pkg/controllers"
 	"github.com/rahulsm20/go-crud-api/pkg/initializers"
+	"github.com/rahulsm20/go-crud-api/pkg/routes"
 )
 
 func init() {
@@ -18,19 +18,8 @@ func main() {
 			"message": "Welcome",
 		})
 	})
-	posts := r.Group("/posts")
-	{
-		posts.GET("/:id", controllers.FetchPostByID)
-		posts.PUT("/:id", controllers.UpdatePost)
-		posts.DELETE("/:id", controllers.DeletePost)
-		posts.POST("/", controllers.CreatePost)
-		posts.GET("/", controllers.FetchAllPosts)
-	}
 
-	users := r.Group("/users")
-	{
-		users.POST("/", controllers.Signup)
-		users.DELETE("/", controllers.DeleteUser)
-	}
+	routes.PostRoutes(r.Group(""))
+	routes.UserRoutes(r.Group(""))
 	r.Run()
 }
