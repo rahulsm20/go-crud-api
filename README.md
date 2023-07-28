@@ -1,4 +1,4 @@
-# GO CRUD API 🍸
+# GO CRUD API (using Gin Framework)🍸
 
 ### Dependencies
 * Framework
@@ -6,7 +6,7 @@
 * Authentication
   * Crypto
   * JWT
-* Database Utilies
+* Database Utilities
   * GORM 
   * GORM - Postgres Driver
   

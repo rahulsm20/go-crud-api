@@ -19,7 +19,7 @@ func Signup(c *gin.Context) {
 	//Validate Details
 	user, err := middleware.ValidateUser(c)
 	if err != nil {
-		c.JSON(400, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})
 		fmt.Println(err)
@@ -29,13 +29,13 @@ func Signup(c *gin.Context) {
 	result := initializers.DB.Create(user)
 
 	if result.Error != nil {
-		c.JSON(400, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"Error": "Failed to create user",
 		})
 		return
 	}
 
-	c.JSON(201, gin.H{
+	c.JSON(http.StatusCreated, gin.H{
 		"User created": user,
 	})
 
@@ -54,13 +54,13 @@ func DeleteUser(c *gin.Context) {
 	result := initializers.DB.Delete(&user)
 
 	if result.Error != nil {
-		c.JSON(400, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"Error": "Failed to delete user",
 		})
 		return
 	}
 
-	c.JSON(204, gin.H{
+	c.JSON(http.StatusNoContent, gin.H{
 		"User deleted": user,
 	})
 
@@ -82,14 +82,14 @@ func Signin(c *gin.Context) {
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
 
 	if user.ID == 0 {
-		c.JSON(400, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"Error": "Failed to find user",
 		})
 		return
 	}
 
 	if err != nil {
-		c.JSON(400, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"Error": "Wrong password",
 		})
 		return
@@ -104,7 +104,7 @@ func Signin(c *gin.Context) {
 	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET")))
 
 	if err != nil {
-		c.JSON(400, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"Error": err.Error(),
 		})
 		return

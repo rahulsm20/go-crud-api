@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/rahulsm20/go-crud-api/pkg/initializers"
 	"github.com/rahulsm20/go-crud-api/pkg/models"
@@ -24,7 +26,7 @@ func CreatePost(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{
+	c.JSON(http.StatusCreated, gin.H{
 		"post": post,
 	})
 }
@@ -42,7 +44,7 @@ func FetchPostByID(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"post": post,
 	})
 }
@@ -52,7 +54,7 @@ func FetchAllPosts(c *gin.Context) {
 	var post []models.Post
 	initializers.DB.Find(&post)
 
-	c.JSON(200, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"posts": post,
 	})
 }
@@ -70,7 +72,7 @@ func UpdatePost(c *gin.Context) {
 	var post models.Post
 	initializers.DB.First(&post, id)
 	if post.ID == 0 {
-		c.JSON(400, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"Error": "Invalid post ID",
 		})
 		return
@@ -82,7 +84,7 @@ func UpdatePost(c *gin.Context) {
 		Body:  body.Body,
 	})
 
-	c.JSON(200, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"post": post,
 	})
 }
@@ -92,7 +94,7 @@ func DeletePost(c *gin.Context) {
 
 	initializers.DB.Delete(&models.Post{}, id)
 
-	c.JSON(204, gin.H{
+	c.JSON(http.StatusNoContent, gin.H{
 		"message": "Post deleted successfully",
 	})
 }
