@@ -6,11 +6,11 @@ COPY go.mod go.sum ./
 
 RUN go mod download
 
-COPY *.go ./
-
+COPY cmd/*.go ./cmd/
+COPY pkg/ ./pkg/
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /go-crud-api
+RUN CGO_ENABLED=0 GOOS=linux go build -o /go-crud-api ./cmd
 
 EXPOSE 3000
 
