@@ -1,10 +1,14 @@
-# GO CRUD API
+# GO CRUD API 🍸
 
 ### Dependencies
-* Gin 
-* Crypto
-* GORM 
-* GORM - Postgres Driver
+* Framework
+    * Gin 
+* Authentication
+  * Crypto
+  * JWT
+* Database Utilies
+  * GORM 
+  * GORM - Postgres Driver
   
 ### Database
 * PostgreSQL
