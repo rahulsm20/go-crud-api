@@ -1,16 +1,35 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "./main.go",
-        "use": "@vercel/go"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/main"
-      }
-    ]
-  }
-  
+  "version": 2,
+  "builds": [
+    {
+      "src": "main.go",
+      "use": "@vercel/go"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/posts",
+      "methods": ["GET", "POST", "PUT", "DELETE"],
+      "dest": "main"
+    },
+    {
+      "src": "/api/posts/:id",
+      "methods": ["GET", "PUT", "DELETE"],
+      "dest": "main"
+    },
+    {
+      "src": "/api/users",
+      "methods": ["POST"],
+      "dest": "main"
+    },
+    {
+      "src": "/api/users/login",
+      "methods": ["POST"],
+      "dest": "main"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "main"
+    }
+  ]
+}
