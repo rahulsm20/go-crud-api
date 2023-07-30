@@ -13,6 +13,22 @@ func init() {
 	initializers.ConnectToDB()
 }
 
+func Handler(w http.ResponseWriter, r *http.Request) {
+	r.Header.Set("X-Serverless-Function", "GinServer")
+	r.Header.Set("Content-Type", "application/json")
+	r.Header.Set("Access-Control-Allow-Origin", "*")
+
+	engine := gin.New()
+
+	// Recover from any panics
+	engine.Use(gin.Recovery())
+
+	routes.PostRoutes(engine.Group("/api"))
+	routes.UserRoutes(engine.Group("/api"))
+
+	engine.ServeHTTP(w, r)
+}
+
 func main() {
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
@@ -23,5 +39,5 @@ func main() {
 
 	routes.PostRoutes(r.Group(""))
 	routes.UserRoutes(r.Group(""))
-	http.Handle("/", r)
+	r.Run()
 }
