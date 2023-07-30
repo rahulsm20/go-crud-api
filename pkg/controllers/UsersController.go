@@ -112,6 +112,8 @@ func Signin(c *gin.Context) {
 
 	c.SetCookie("Authorization", tokenString, 3600*24*30, "", "", false, true)
 
-	c.JSON(http.StatusOK, gin.H{})
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Login successful",
+	})
 
 }
