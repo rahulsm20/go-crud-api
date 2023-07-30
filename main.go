@@ -1,8 +1,6 @@
-package handler
+package main
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/rahulsm20/go-crud-api/pkg/initializers"
 	"github.com/rahulsm20/go-crud-api/pkg/routes"
@@ -11,22 +9,6 @@ import (
 func init() {
 	initializers.LoadEnvVariables()
 	initializers.ConnectToDB()
-}
-
-func Handler(w http.ResponseWriter, r *http.Request) {
-	r.Header.Set("X-Serverless-Function", "GinServer")
-	r.Header.Set("Content-Type", "application/json")
-	r.Header.Set("Access-Control-Allow-Origin", "*")
-
-	engine := gin.New()
-
-	// Recover from any panics
-	engine.Use(gin.Recovery())
-
-	routes.PostRoutes(engine.Group("/api"))
-	routes.UserRoutes(engine.Group("/api"))
-
-	engine.ServeHTTP(w, r)
 }
 
 func main() {
