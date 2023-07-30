@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/rahulsm20/go-crud-api/pkg/initializers"
 	"github.com/rahulsm20/go-crud-api/pkg/routes"
@@ -21,5 +23,5 @@ func main() {
 
 	routes.PostRoutes(r.Group(""))
 	routes.UserRoutes(r.Group(""))
-	r.Run()
+	http.Handle("/", r)
 }
