@@ -21,6 +21,9 @@ jobs:
 
       - name: Install dependencies
         run: go mod download
+      
+      - name: Test endpoints
+        run: go test
 
       - name: Build Go Binary
         run: go build -o ./go-crud-api 

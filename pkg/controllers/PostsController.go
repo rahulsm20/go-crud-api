@@ -1,11 +1,15 @@
 package controllers
 
 import (
+	"errors"
+	"log"
 	"net/http"
+	"regexp"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rahulsm20/go-crud-api/pkg/initializers"
 	"github.com/rahulsm20/go-crud-api/pkg/models"
+	"gorm.io/gorm"
 )
 
 func CreatePost(c *gin.Context) {
@@ -32,14 +36,29 @@ func CreatePost(c *gin.Context) {
 }
 
 func FetchPostByID(c *gin.Context) {
-
 	id := c.Param("id")
+	match, err := regexp.MatchString(`\d+`, id)
 
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"Error": "Server Error",
+		})
+		// Log the error for debugging
+		log.Println("Error matching ID:", err)
+		return
+	}
+
+	if !match {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"Error": "Invalid Post ID",
+		})
+		return
+	}
 	var post models.Post
 	initializers.DB.First(&post, id)
 	if post.ID == 0 {
 		c.JSON(400, gin.H{
-			"Error": "Invalid post ID",
+			"Error": "Post doesn't exist",
 		})
 		return
 	}
@@ -61,6 +80,15 @@ func FetchAllPosts(c *gin.Context) {
 
 func UpdatePost(c *gin.Context) {
 	id := c.Param("id")
+
+	match, _ := regexp.MatchString(`\d+`, id)
+
+	if !match {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"Error": "Invalid Post ID",
+		})
+		return
+	}
 
 	var body struct {
 		Title string
@@ -91,10 +119,39 @@ func UpdatePost(c *gin.Context) {
 
 func DeletePost(c *gin.Context) {
 	id := c.Param("id")
+	match, _ := regexp.MatchString(`\d+`, id)
 
-	initializers.DB.Delete(&models.Post{}, id)
+	if !match {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"Error": "Invalid Post ID",
+		})
+		return
+	}
+	var post models.Post
 
-	c.JSON(http.StatusNoContent, gin.H{
+	if err := initializers.DB.First(&post, id).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			// Respond with a message if the post doesn't exist
+			c.JSON(http.StatusNotFound, gin.H{
+				"message": "Post not found",
+			})
+		} else {
+			// Handle other database errors
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": "Internal Server Error",
+			})
+		}
+		return
+	}
+
+	if err := initializers.DB.Delete(&post, id).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"Error": "Invalid Post ID",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
 		"message": "Post deleted successfully",
 	})
 }
