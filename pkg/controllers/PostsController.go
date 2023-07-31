@@ -15,18 +15,35 @@ import (
 func CreatePost(c *gin.Context) {
 
 	var body struct {
-		Title string
-		Body  string
+		Title   string
+		Body    string
+		User_id int
 	}
-
 	c.Bind(&body)
 
-	//Create Post
-	post := models.Post{Title: body.Title, Body: body.Body}
-	result := initializers.DB.Create(&post)
+	var user models.User
+	if body.User_id == 0 || body.Title == "" || body.Body == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"Error": "Enter valid details",
+		})
+		return
+	}
+	err := initializers.DB.First(&user, "id=?", body.User_id).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"Error": "User doesn't exist",
+		})
+		return
+	}
 
-	if result.Error != nil {
-		c.Status(400)
+	//Create Post
+	post := models.Post{Title: body.Title, Body: body.Body, User_id: int(user.ID)}
+	creationError := initializers.DB.Create(&post).Error
+
+	if creationError != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"Error": creationError,
+		})
 		return
 	}
 
