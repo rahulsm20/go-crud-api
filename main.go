@@ -21,5 +21,9 @@ func main() {
 
 	routes.PostRoutes(r.Group(""))
 	routes.UserRoutes(r.Group(""))
-	r.Run()
+	// r.Run()
 }
+
+// func main() {
+// 	lambda.Start(Handler)
+// }

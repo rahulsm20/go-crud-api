@@ -1,6 +1,8 @@
 # GO CRUD API 
 [Postman Documentation](https://documenter.getpostman.com/view/22495929/2s9Xxtwue7)  | 
-[Live Endpoint](https://gocrudapi.onrender.com/)
+[Live Endpoint](https://gocrudapi.onrender.com/)  
+
+![System design](https://github.com/rahulsm20/go-crud-api/assets/77540672/dc1d077d-2117-414b-aeef-34708af830cc)
 
 This is a CRUD (Create, Read, Update, Delete) API built in Go using the Gin web framework. The API allows users to perform basic CRUD operations on posts and supports user signup and authentication. It uses a PostgreSQL database to store post and user data.
 ### Dependencies
@@ -21,14 +23,6 @@ This is a CRUD (Create, Read, Update, Delete) API built in Go using the Gin web 
 - Go (v1.16 or higher)
 - PostgreSQL database
 - Postman (optional, for testing the API)
-
-## Dependencies
-- Gin
-- Authentication
-  - jwt-go
-- ORM
-  - GORM
-  - GORM/Postgres Driver
 
 ## Installation
 
