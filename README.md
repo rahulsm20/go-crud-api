@@ -51,12 +51,11 @@ The API server will run on `http://localhost:3000`.
 
 ## Endpoints
 
-![System design](https://github.com/rahulsm20/go-crud-api/assets/77540672/dc1d077d-2117-414b-aeef-34708af830cc)
+![System design](https://github.com/rahulsm20/go-crud-api/assets/77540672/e2ae444c-b8e6-46eb-b6a6-824c273118c2)
 
 ### Database Schema
-![database_schema](https://github.com/rahulsm20/go-crud-api/assets/77540672/51b0da0a-6dc6-4f19-8467-adcf6c1d56f5)
+![database_schema](https://github.com/rahulsm20/go-crud-api/assets/77540672/0208841e-cbdc-4f8f-a649-cada77d7746a)
 
 
 ### ER Diagram
-![er_diagram](https://github.com/rahulsm20/go-crud-api/assets/77540672/d3d30618-6582-414e-977f-85b895309f7b)
-
+![er_diagram](https://github.com/rahulsm20/go-crud-api/assets/77540672/72d06af7-782e-4a97-b908-ffb31e6a092f)
